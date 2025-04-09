@@ -1,4 +1,7 @@
-def predict_anomalies(model, new_data, scaler, sequence_length, features, thresholds):
+import numpy as np
+def predict_anomalies(model, new_data, scaler, sequence_length, features, thresholds={'general': 0.5, 'memory_pct': 80, 'memory_mb': 500, 'cpu': 90, 'restarts': 5, 'network_receive': 10000, 'network_transmit': 10000}):
+    # Function implementation
+
     """
     Predict anomalies with confidence scores and anomaly types
     

@@ -22,3 +22,19 @@ def enhance_features(df):
         lambda x: x.diff().diff())
     
     return df
+def generate_early_warnings(df, model, scaler, features, sequence_length, warning_threshold=0.7):
+    # Define thresholds
+    thresholds = {
+        'general': 0.5,
+        'memory_pct': 80,
+        'memory_mb': 500,
+        'cpu': 90,
+        'restarts': 5,
+        'network_receive': 10000,
+        'network_transmit': 10000
+    }
+    
+    # Get predictions with thresholds
+    predictions = predict_anomalies(model, df, scaler, sequence_length, features, thresholds)
+    
+    # Rest of the function
