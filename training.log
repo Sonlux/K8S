@@ -1,0 +1,98 @@
+2025-04-12 16:27:35,704 - k8s_anomaly_detection - INFO - Created output directory: model_artifacts
+2025-04-12 16:27:35,704 - k8s_anomaly_detection - INFO - Created run directory: model_artifacts\run_20250412_162735
+2025-04-12 16:27:35,704 - k8s_anomaly_detection - INFO - Parameters saved to model_artifacts\run_20250412_162735\parameters.joblib
+2025-04-12 16:27:35,705 - k8s_anomaly_detection - INFO - Loading data from dataSynthetic.csv
+2025-04-12 16:27:36,160 - k8s_anomaly_detection - INFO - Adding engineered features
+2025-04-12 16:27:36,191 - k8s_anomaly_detection - INFO - Defining anomaly labels
+2025-04-12 16:27:36,219 - k8s_anomaly_detection - INFO - Anomaly distribution: 94679/100000 (94.68%)
+2025-04-12 16:27:36,219 - k8s_anomaly_detection - INFO - Scaling features
+2025-04-12 17:36:36,891 - k8s_anomaly_detection - INFO - Created run directory: model_artifacts\run_20250412_173636
+2025-04-12 17:36:36,892 - k8s_anomaly_detection - INFO - Parameters saved to model_artifacts\run_20250412_173636\parameters.joblib
+2025-04-12 17:36:36,892 - k8s_anomaly_detection - INFO - Loading data from dataSynthetic.csv
+2025-04-12 17:36:37,365 - k8s_anomaly_detection - INFO - Adding engineered features
+2025-04-12 17:36:37,397 - k8s_anomaly_detection - INFO - Defining anomaly labels
+2025-04-12 17:36:37,424 - k8s_anomaly_detection - INFO - Anomaly distribution: 94679/100000 (94.68%)
+2025-04-12 17:36:37,424 - k8s_anomaly_detection - INFO - Scaling features
+2025-04-12 17:37:48,441 - k8s_anomaly_detection - INFO - Created run directory: model_artifacts\run_20250412_173748
+2025-04-12 17:37:48,441 - k8s_anomaly_detection - INFO - Parameters saved to model_artifacts\run_20250412_173748\parameters.joblib
+2025-04-12 17:37:48,441 - k8s_anomaly_detection - INFO - Loading data from dataSynthetic.csv
+2025-04-12 17:37:48,895 - k8s_anomaly_detection - INFO - Adding engineered features
+2025-04-12 17:37:48,953 - k8s_anomaly_detection - INFO - Defining anomaly labels
+2025-04-12 17:37:48,978 - k8s_anomaly_detection - INFO - Anomaly distribution: 94679/100000 (94.68%)
+2025-04-12 17:37:48,978 - k8s_anomaly_detection - INFO - Scaling features
+2025-04-12 17:37:49,015 - k8s_anomaly_detection - INFO - Scaler saved to model_artifacts\run_20250412_173748\scaler.pkl
+2025-04-12 17:37:49,015 - k8s_anomaly_detection - INFO - Creating sequences with length 10
+2025-04-12 17:37:49,264 - k8s_anomaly_detection - INFO - Training data shape: (83325, 10, 19), Test data shape: (16665, 10, 19)
+2025-04-12 17:37:49,280 - k8s_anomaly_detection - INFO - Class weights: {0: np.float64(9.4752103707073), 1: np.float64(0.5278545003040745)}
+2025-04-12 17:37:49,344 - k8s_anomaly_detection - INFO - Building LSTM model
+2025-04-12 17:37:49,508 - k8s_anomaly_detection - INFO - Training model for 50 epochs with batch size 32
+2025-04-12 17:38:03,736 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 17:38:15,581 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 17:38:52,587 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 17:39:05,562 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 17:42:12,288 - k8s_anomaly_detection - INFO - Training history plot saved to model_artifacts\run_20250412_173748\training_history.png
+2025-04-12 17:42:12,288 - k8s_anomaly_detection - INFO - Evaluating model on test set
+2025-04-12 17:42:13,807 - k8s_anomaly_detection - INFO - Test Loss: 0.6751, Test Accuracy: 0.9446
+2025-04-12 17:42:13,807 - k8s_anomaly_detection - INFO - Test AUC: 0.5000, Test Precision: 0.9446, Test Recall: 1.0000
+2025-04-12 17:42:15,401 - k8s_anomaly_detection - INFO - Finding optimal threshold using precision-recall curve
+2025-04-12 17:42:26,712 - k8s_anomaly_detection - INFO - Optimal threshold: 0.5093 (F1=0.9715)
+2025-04-12 17:42:26,713 - k8s_anomaly_detection - INFO - 95th percentile threshold: 0.5106
+2025-04-12 17:42:26,816 - k8s_anomaly_detection - INFO - Evaluating model performance
+2025-04-12 17:42:28,011 - k8s_anomaly_detection - INFO - Confusion Matrix:
+[[    0   924]
+ [    0 15741]]
+2025-04-12 17:42:28,016 - k8s_anomaly_detection - INFO - Classification Report:
+              precision    recall  f1-score       support
+0.0            0.000000  0.000000  0.000000    924.000000
+1.0            0.944554  1.000000  0.971487  15741.000000
+accuracy       0.944554  0.944554  0.944554      0.944554
+macro avg      0.472277  0.500000  0.485743  16665.000000
+weighted avg   0.892183  0.944554  0.917622  16665.000000
+2025-04-12 17:42:28,017 - k8s_anomaly_detection - INFO - Evaluation results saved to model_artifacts\run_20250412_173748\evaluation_results.joblib
+2025-04-12 17:42:28,131 - k8s_anomaly_detection - INFO - Confusion matrix plot saved to model_artifacts\run_20250412_173748\confusion_matrix.png
+2025-04-12 17:42:28,132 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 17:42:28,144 - k8s_anomaly_detection - INFO - Model saved to model_artifacts\run_20250412_173748\lstm_anomaly_model.h5
+2025-04-12 17:42:28,145 - k8s_anomaly_detection - INFO - Threshold saved to model_artifacts\run_20250412_173748\anomaly_threshold.pkl
+2025-04-12 17:42:28,145 - k8s_anomaly_detection - INFO - Training completed successfully!
+2025-04-12 18:04:40,192 - k8s_anomaly_detection - INFO - Created run directory: model_artifacts\run_20250412_180440
+2025-04-12 18:04:40,193 - k8s_anomaly_detection - INFO - Parameters saved to model_artifacts\run_20250412_180440\parameters.joblib
+2025-04-12 18:04:40,193 - k8s_anomaly_detection - INFO - Loading data from dataSynthetic.csv
+2025-04-12 18:04:40,663 - k8s_anomaly_detection - INFO - Adding engineered features
+2025-04-12 18:04:40,722 - k8s_anomaly_detection - INFO - Defining anomaly labels
+2025-04-12 18:04:40,749 - k8s_anomaly_detection - INFO - Anomaly distribution: 94679/100000 (94.68%)
+2025-04-12 18:04:40,749 - k8s_anomaly_detection - INFO - Scaling features
+2025-04-12 18:04:40,783 - k8s_anomaly_detection - INFO - Scaler saved to model_artifacts\run_20250412_180440\scaler.pkl
+2025-04-12 18:04:40,783 - k8s_anomaly_detection - INFO - Creating sequences with length 10
+2025-04-12 18:04:41,052 - k8s_anomaly_detection - INFO - Training data shape: (83325, 10, 19), Test data shape: (16665, 10, 19)
+2025-04-12 18:04:41,058 - k8s_anomaly_detection - INFO - Class weights: {0: np.float64(9.4752103707073), 1: np.float64(0.5278545003040745)}
+2025-04-12 18:04:41,081 - k8s_anomaly_detection - INFO - Building LSTM model
+2025-04-12 18:04:41,162 - k8s_anomaly_detection - INFO - Training model for 50 epochs with batch size 32
+2025-04-12 18:04:54,965 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 18:05:06,621 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 18:05:30,483 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 18:05:54,438 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 18:06:57,112 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 18:09:05,810 - k8s_anomaly_detection - INFO - Training history plot saved to model_artifacts\run_20250412_180440\training_history.png
+2025-04-12 18:09:05,810 - k8s_anomaly_detection - INFO - Evaluating model on test set
+2025-04-12 18:09:07,294 - k8s_anomaly_detection - INFO - Test Loss: 0.6574, Test Accuracy: 0.9446
+2025-04-12 18:09:07,295 - k8s_anomaly_detection - INFO - Test AUC: 0.5000, Test Precision: 0.9446, Test Recall: 1.0000
+2025-04-12 18:09:08,792 - k8s_anomaly_detection - INFO - Finding optimal threshold using precision-recall curve
+2025-04-12 18:09:19,888 - k8s_anomaly_detection - INFO - Optimal threshold: 0.5197 (F1=0.9715)
+2025-04-12 18:09:19,888 - k8s_anomaly_detection - INFO - 95th percentile threshold: 0.5209
+2025-04-12 18:09:20,009 - k8s_anomaly_detection - INFO - Evaluating model performance
+2025-04-12 18:09:21,151 - k8s_anomaly_detection - INFO - Confusion Matrix:
+[[    0   924]
+ [    0 15741]]
+2025-04-12 18:09:21,156 - k8s_anomaly_detection - INFO - Classification Report:
+              precision    recall  f1-score       support
+0.0            0.000000  0.000000  0.000000    924.000000
+1.0            0.944554  1.000000  0.971487  15741.000000
+accuracy       0.944554  0.944554  0.944554      0.944554
+macro avg      0.472277  0.500000  0.485743  16665.000000
+weighted avg   0.892183  0.944554  0.917622  16665.000000
+2025-04-12 18:09:21,157 - k8s_anomaly_detection - INFO - Evaluation results saved to model_artifacts\run_20250412_180440\evaluation_results.joblib
+2025-04-12 18:09:21,275 - k8s_anomaly_detection - INFO - Confusion matrix plot saved to model_artifacts\run_20250412_180440\confusion_matrix.png
+2025-04-12 18:09:21,276 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 18:09:21,287 - k8s_anomaly_detection - INFO - Model saved to model_artifacts\run_20250412_180440\lstm_anomaly_model.h5
+2025-04-12 18:09:21,288 - k8s_anomaly_detection - INFO - Threshold saved to model_artifacts\run_20250412_180440\anomaly_threshold.pkl
+2025-04-12 18:09:21,289 - k8s_anomaly_detection - INFO - Training completed successfully!

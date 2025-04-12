@@ -2,6 +2,9 @@ from kubernetes import client, config
 import re
 import logging
 import sys
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 # Configure logging
 logging.basicConfig(
@@ -11,6 +14,100 @@ logging.basicConfig(
     stream=sys.stdout
 )
 logger = logging.getLogger("k8s-remediation-utils")
+
+# Define dynamic thresholds based on analysis
+class DynamicThresholds:
+    def __init__(self):
+        self.thresholds = {
+            'CPU Usage (%)': {
+                'warning': 70.0,
+                'critical': 85.0,
+                'scaling_factor': 1.5
+            },
+            'Memory Usage (%)': {
+                'warning': 75.0,
+                'critical': 90.0,
+                'scaling_factor': 1.5
+            },
+            'Pod Restarts': {
+                'warning': 3,
+                'critical': 5,
+                'scaling_factor': 1.0
+            },
+            'Memory Usage (MB)': {
+                'warning': 400.0,
+                'critical': 600.0,
+                'scaling_factor': 1.5
+            },
+            'Network Receive Bytes': {
+                'warning': 8000.0,
+                'critical': 12000.0,
+                'scaling_factor': 1.2
+            },
+            'Network Transmit Bytes': {
+                'warning': 8000.0,
+                'critical': 12000.0,
+                'scaling_factor': 1.2
+            },
+            'FS Reads Total (MB)': {
+                'warning': 50.0,
+                'critical': 100.0,
+                'scaling_factor': 1.3
+            },
+            'FS Writes Total (MB)': {
+                'warning': 50.0,
+                'critical': 100.0,
+                'scaling_factor': 1.3
+            },
+            'Network Receive Packets Dropped (p/s)': {
+                'warning': 50.0,
+                'critical': 100.0,
+                'scaling_factor': 1.2
+            },
+            'Network Transmit Packets Dropped (p/s)': {
+                'warning': 50.0,
+                'critical': 100.0,
+                'scaling_factor': 1.2
+            },
+            'Ready Containers': {
+                'warning': 0.5,  # 50% of expected containers
+                'critical': 0.0,  # No containers ready
+                'scaling_factor': 1.0
+            }
+        }
+        self.history = {metric: [] for metric in self.thresholds.keys()}
+        self.window_size = 100  # Number of samples to consider for dynamic adjustment
+        self.adjustment_factor = 0.1  # How much to adjust thresholds based on history
+
+    def update_thresholds(self, metrics):
+        """Update thresholds based on recent metrics history"""
+        for metric, value in metrics.items():
+            if metric in self.thresholds:
+                self.history[metric].append(value)
+                if len(self.history[metric]) > self.window_size:
+                    self.history[metric].pop(0)
+                
+                # Calculate dynamic thresholds based on history
+                if len(self.history[metric]) >= 10:  # Minimum samples needed
+                    mean = np.mean(self.history[metric])
+                    std = np.std(self.history[metric])
+                    
+                    # Adjust thresholds based on recent patterns
+                    self.thresholds[metric]['warning'] = max(
+                        mean + std,
+                        self.thresholds[metric]['warning'] * (1 - self.adjustment_factor)
+                    )
+                    self.thresholds[metric]['critical'] = max(
+                        mean + 2 * std,
+                        self.thresholds[metric]['critical'] * (1 - self.adjustment_factor)
+                    )
+
+    def get_thresholds(self):
+        """Get current threshold values"""
+        return self.thresholds
+
+# Initialize global thresholds
+dynamic_thresholds = DynamicThresholds()
 
 def parse_resource_value(value, is_memory=False):
     """Parse a Kubernetes resource value with units (e.g., '1007490n', '175820Ki', '1Gi') to a float."""
@@ -62,6 +159,7 @@ def fetch_metrics(pod, k8s_api):
             metrics['Pod Restarts'] = float(container_statuses[0].restart_count) if container_statuses[0].restart_count is not None else 0.0
             metrics['Ready Containers'] = float(sum(1 for cs in container_statuses if cs.ready)) if any(cs.ready for cs in container_statuses) else 0.0
         logger.info(f"Simulating resource exhaustion for {pod_id}: {metrics}")
+        dynamic_thresholds.update_thresholds(metrics)
         return metrics
 
     try:
@@ -113,6 +211,7 @@ def fetch_metrics(pod, k8s_api):
                         'Ready Containers': float(ready_containers)
                     }
                     logger.debug(f"Computed metrics for {pod_id}: {metrics}")
+                    dynamic_thresholds.update_thresholds(metrics)
                     return metrics
 
         logger.warning(f"Metrics API data not found for {pod_id}, using fallback")
@@ -133,6 +232,7 @@ def fetch_metrics(pod, k8s_api):
             'Ready Containers': float(ready_containers)
         }
         logger.debug(f"Fallback metrics for {pod_id}: {metrics}")
+        dynamic_thresholds.update_thresholds(metrics)
         return metrics
     except client.exceptions.ApiException as e:
         logger.error(f"Metrics API error for {pod_id}: {str(e)} - falling back to defaults")
@@ -153,6 +253,7 @@ def fetch_metrics(pod, k8s_api):
             'Ready Containers': float(ready_containers)
         }
         logger.debug(f"Exception fallback metrics for {pod_id}: {metrics}")
+        dynamic_thresholds.update_thresholds(metrics)
         return metrics
     except Exception as e:
         logger.error(f"Unexpected error fetching metrics for {pod_id}: {str(e)}")
@@ -170,6 +271,7 @@ def fetch_metrics(pod, k8s_api):
             'Ready Containers': 0.0
         }
         logger.debug(f"Default fallback metrics for {pod_id}: {metrics}")
+        dynamic_thresholds.update_thresholds(metrics)
         return metrics
 
 if __name__ == "__main__":
@@ -179,3 +281,4 @@ if __name__ == "__main__":
     if pods:
         metrics = fetch_metrics(pods[0], v1)
         logger.info(f"Sample metrics: {metrics}")
+        logger.info(f"Current thresholds: {dynamic_thresholds.get_thresholds()}")

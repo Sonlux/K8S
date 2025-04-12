@@ -1,0 +1,8 @@
+{
+    "model_path": "D:\\K8\\lstm_anomaly_model.h5",
+    "scaler_path": "D:\\K8\\scaler.pkl",
+    "threshold": 0.49848276376724243,
+    "roc_auc": 0.4977862278983831,
+    "pr_auc": 0.6278953310396183,
+    "sequence_length": 10
+}

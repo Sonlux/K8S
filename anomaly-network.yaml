@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-anomaly-deployment
+  labels:
+    app: test-anomaly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-anomaly
+  template:
+    metadata:
+      labels:
+        app: test-anomaly
+    spec:
+      containers:
+        - name: test-container
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "while true; do nc -v non-existent-host 80; sleep 1; done",
+            ]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"

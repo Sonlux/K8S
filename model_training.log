@@ -1,0 +1,92 @@
+2025-04-12 12:00:57,667 - lstm-model-training - INFO - Starting model training with data from D:\K8\dataSynthetic.csv
+2025-04-12 12:00:58,115 - lstm-model-training - INFO - Loaded dataset with 100000 records
+2025-04-12 12:00:58,115 - lstm-model-training - INFO - Performing feature engineering
+2025-04-12 12:04:27,707 - lstm-model-training - INFO - Starting model training with data from D:\K8\dataSynthetic.csv
+2025-04-12 12:04:28,164 - lstm-model-training - INFO - Loaded dataset with 100000 records
+2025-04-12 12:04:28,174 - lstm-model-training - INFO - Defining anomaly targets
+2025-04-12 12:04:28,210 - lstm-model-training - INFO - Anomaly distribution: 95348 anomalies (95.35%) out of 100000 records
+2025-04-12 12:04:28,212 - lstm-model-training - INFO - Performing feature engineering
+2025-04-12 12:04:28,348 - lstm-model-training - INFO - Scaling features
+2025-04-12 12:04:28,409 - lstm-model-training - INFO - Scaler saved as 'D:\K8\scaler.pkl'
+2025-04-12 12:04:28,409 - lstm-model-training - INFO - Creating sequences with length 10
+2025-04-12 12:04:28,537 - lstm-model-training - INFO - Created 99990 sequences
+2025-04-12 12:04:28,643 - lstm-model-training - INFO - Train set: (79992, 10, 37), Test set: (19998, 10, 37)
+2025-04-12 12:04:28,643 - lstm-model-training - INFO - Building LSTM model
+2025-04-12 12:04:28,823 - lstm-model-training - INFO - Training model for 50 epochs with batch size 32
+2025-04-12 12:04:46,052 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 12:05:00,639 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 12:08:45,293 - lstm-model-training - INFO - Evaluating model
+2025-04-12 12:08:48,552 - lstm-model-training - INFO - Test Loss: 0.1881, Test Accuracy: 0.9535
+2025-04-12 12:08:52,103 - lstm-model-training - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+         0.0       0.00      0.00      0.00       930
+         1.0       0.95      1.00      0.98     19068
+
+    accuracy                           0.95     19998
+   macro avg       0.48      0.50      0.49     19998
+weighted avg       0.91      0.95      0.93     19998
+
+2025-04-12 12:08:52,106 - lstm-model-training - INFO - ROC AUC: 0.4962
+2025-04-12 12:08:52,107 - lstm-model-training - INFO - Optimal threshold from ROC: 0.9556
+2025-04-12 12:08:52,108 - lstm-model-training - INFO - Percentile-based threshold (95.0%): 0.9563
+2025-04-12 12:08:52,108 - lstm-model-training - INFO - Final anomaly threshold: 0.9563
+2025-04-12 12:08:52,108 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 12:08:52,147 - lstm-model-training - INFO - Model saved as 'D:\K8\lstm_anomaly_model.h5'
+2025-04-12 12:08:52,147 - lstm-model-training - INFO - Threshold saved as 'D:\K8\anomaly_threshold.pkl'
+2025-04-12 12:08:52,147 - lstm-model-training - INFO - Training history saved as 'D:\K8\training_history.pkl'
+2025-04-12 12:08:53,168 - lstm-model-training - INFO - Performance plots saved as 'D:\K8\model_performance.png'
+2025-04-12 12:08:53,168 - lstm-model-training - INFO - Performing cross-validation
+2025-04-12 12:10:18,917 - lstm-model-training - INFO - Fold accuracy: 0.9514
+2025-04-12 12:10:54,266 - lstm-model-training - INFO - Fold accuracy: 0.9544
+2025-04-12 12:12:04,994 - lstm-model-training - INFO - Fold accuracy: 0.9543
+2025-04-12 12:13:23,908 - lstm-model-training - INFO - Fold accuracy: 0.9549
+2025-04-12 12:14:40,144 - lstm-model-training - INFO - Fold accuracy: 0.9524
+2025-04-12 12:14:40,144 - lstm-model-training - INFO - Cross-validation accuracy: 0.9535 (+/- 0.0013)
+2025-04-12 12:14:40,145 - lstm-model-training - INFO - Model training completed in 612.44 seconds
+2025-04-12 14:21:41,447 - lstm-model-training - INFO - Starting model training with data from D:\K8\dataSynthetic.csv
+2025-04-12 14:21:41,973 - lstm-model-training - INFO - Loaded dataset with 100000 records
+2025-04-12 14:21:41,984 - lstm-model-training - INFO - Performing feature engineering
+2025-04-12 14:21:42,028 - lstm-model-training - INFO - Defining anomaly targets with refined criteria
+2025-04-12 14:21:42,056 - lstm-model-training - INFO - Anomaly distribution: 63053 anomalies (63.05%) out of 100000 records
+2025-04-12 14:21:42,056 - lstm-model-training - INFO - Scaling features
+2025-04-12 14:21:42,121 - lstm-model-training - INFO - Scaler saved as 'D:\K8\scaler.pkl'
+2025-04-12 14:21:42,121 - lstm-model-training - INFO - Creating sequences with length 10
+2025-04-12 14:21:42,271 - lstm-model-training - INFO - Created 99990 sequences
+2025-04-12 14:21:42,397 - lstm-model-training - INFO - Train set: (79992, 10, 37), Test set: (19998, 10, 37)
+2025-04-12 14:21:42,402 - lstm-model-training - INFO - Class weights: {0: np.float64(1.353181987346483), 1: np.float64(0.793020719738277)}
+2025-04-12 14:21:42,403 - lstm-model-training - INFO - Applying SMOTE to balance classes
+2025-04-12 14:21:44,720 - lstm-model-training - INFO - After SMOTE - X_train: (100870, 370), y_train: (100870,)
+2025-04-12 14:21:44,720 - lstm-model-training - INFO - Building LSTM model
+2025-04-12 14:21:44,906 - lstm-model-training - INFO - Training model for 50 epochs with batch size 32
+2025-04-12 14:22:06,906 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:22:25,543 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:22:44,743 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:23:05,422 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:24:08,253 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:24:50,896 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:26:38,868 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:30:16,444 - lstm-model-training - INFO - Evaluating model
+2025-04-12 14:30:18,829 - lstm-model-training - INFO - Test Loss: 0.6995, Test Accuracy: 0.3695
+2025-04-12 14:30:18,829 - lstm-model-training - INFO - Test Precision: 0.0000, Test Recall: 0.0000, Test AUC: 0.5000
+2025-04-12 14:30:21,344 - lstm-model-training - INFO - Classification Report:
+              precision    recall  f1-score   support
+
+         0.0       0.37      1.00      0.54      7389
+         1.0       0.00      0.00      0.00     12609
+
+    accuracy                           0.37     19998
+   macro avg       0.18      0.50      0.27     19998
+weighted avg       0.14      0.37      0.20     19998
+
+2025-04-12 14:30:21,346 - lstm-model-training - INFO - ROC AUC: 0.5011
+2025-04-12 14:30:21,348 - lstm-model-training - INFO - Precision-Recall AUC: 0.6503
+2025-04-12 14:30:21,348 - lstm-model-training - INFO - Optimal threshold from F1 score: 0.4883
+2025-04-12 14:30:21,349 - lstm-model-training - INFO - Percentile-based threshold (95.0%): 0.4883
+2025-04-12 14:30:21,349 - lstm-model-training - INFO - Final anomaly threshold: 0.4883
+2025-04-12 14:30:21,350 - absl - WARNING - You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+2025-04-12 14:30:21,376 - lstm-model-training - INFO - Model saved as 'D:\K8\lstm_anomaly_model.h5'
+2025-04-12 14:30:21,376 - lstm-model-training - INFO - Threshold saved as 'D:\K8\anomaly_threshold.pkl'
+2025-04-12 14:30:21,377 - lstm-model-training - INFO - Training history saved as 'D:\K8\training_history.pkl'
+2025-04-12 14:30:21,999 - lstm-model-training - INFO - Performance plots saved as 'D:\K8\model_performance.png'
+2025-04-12 14:30:21,999 - lstm-model-training - INFO - Model training completed in 520.55 seconds

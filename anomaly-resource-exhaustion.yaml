@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-anomaly-deployment
+  labels:
+    app: test-anomaly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-anomaly
+  template:
+    metadata:
+      labels:
+        app: test-anomaly
+    spec:
+      containers:
+        - name: test-container
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "while true; do dd if=/dev/zero of=/dev/null bs=1M count=1000; done",
+            ]
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m" # More realistic CPU limit that will still cause exhaustion
+              memory: "512Mi" # More realistic memory limit

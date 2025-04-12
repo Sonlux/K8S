@@ -1,0 +1,17 @@
+K8s Anomaly Detection Model - Training Summary
+==========================================
+Date: 2025-04-12 18:09:21
+
+Dataset: dataSynthetic.csv
+Total records: 100000
+Anomaly rate: 94.68%
+
+Model Performance:
+- Accuracy: 0.9446
+- AUC: 0.5000
+- Precision: 0.9446
+- Recall: 1.0000
+- F1 Score: 0.9715
+
+Optimal threshold: 0.5197
+Training completed successfully.
