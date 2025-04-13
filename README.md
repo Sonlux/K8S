@@ -1,117 +1,120 @@
-# Improved LSTM Model for Kubernetes Anomaly Detection
+# Kubernetes Multi-Agent System (MAS)
 
-This repository contains an improved LSTM (Long Short-Term Memory) model for detecting anomalies in Kubernetes cluster metrics. The model has been enhanced with several advanced features to improve detection accuracy and robustness.
+An intelligent Multi-Agent System for monitoring, analyzing, and remediating issues in Kubernetes clusters.
 
-## Features
+## Key Features
 
-- **Multiple Model Architectures**:
+- **Intelligent Monitoring**: Continuous monitoring of Kubernetes pod metrics
+- **Issue Detection**: Automatic detection of resource exhaustion, crash loops, and network issues
+- **Predictive Scaling**: ML-based prediction of future resource needs
+- **Smart Remediation**: Automated remediation actions with rollback capability
+- **Effectiveness Evaluation**: Tracking and reporting of remediation effectiveness
 
-  - Standard LSTM
-  - Bidirectional LSTM
-  - LSTM with Attention Mechanism
-  - LSTM Autoencoder
+## System Components
 
-- **Advanced Feature Engineering**:
+- **Coordinator**: Orchestrates monitoring and remediation actions
+- **Specialized Agents**: Handle specific issue types
+- **Remediation System**: Implements remediation strategies with rollback
+- **Effectiveness Evaluation**: Measures the success of remediation actions
+- **Metrics Collection**: Gathers pod and cluster metrics
 
-  - Rate of change features
-  - Rolling statistics
-  - Resource utilization ratios
-  - Container readiness metrics
-  - Network and I/O operation metrics
+## Getting Started
 
-- **Robust Data Preprocessing**:
+### Prerequisites
 
-  - Support for both MinMaxScaler and RobustScaler
-  - Time series-aware data splitting
-  - Class weight balancing for imbalanced data
+- Kubernetes Cluster with metrics-server installed
+- Python 3.8 or higher
+- Access to Kubernetes API (kubeconfig)
 
-- **Comprehensive Evaluation**:
+### Installation
 
-  - ROC curve analysis
-  - Precision-Recall curve
-  - Confusion matrix visualization
-  - Detailed performance metrics
+1. Clone this repository:
 
-- **Training Visualization**:
-  - Loss curves
-  - Accuracy curves
-  - AUC curves
-  - Precision curves
+```bash
+git clone https://github.com/yourusername/k8s-mas.git
+cd k8s-mas
+```
 
-## Installation
-
-1. Clone this repository
 2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
 
-## Usage
-
-Train the model with default settings:
-
-```
-python improved_lstm_model.py --data_path dataSynthetic.csv
+```bash
+pip install -r requirements.txt
 ```
 
-Train with specific architecture:
+3. Set up environment variables:
 
+```bash
+# Create a .env file
+touch .env
+
+# Add your configuration
+echo "KUBERNETES_CONTEXT=your-k8s-context" >> .env
+echo "MONITOR_INTERVAL=300" >> .env  # 5 minutes in seconds
 ```
-python improved_lstm_model.py --data_path dataSynthetic.csv --use_attention --use_bidirectional
+
+### Running the System
+
+To start the Multi-Agent System:
+
+```bash
+python -m mas
 ```
 
-### Command Line Arguments
+This will start the monitoring loop and begin detecting and remediating issues.
 
-- `--data_path`: Path to the input CSV data (default: 'dataSynthetic.csv')
-- `--output_dir`: Directory to save model artifacts (default: 'model_artifacts')
-- `--sequence_length`: Sequence length for LSTM (default: 10)
-- `--batch_size`: Training batch size (default: 32)
-- `--epochs`: Number of training epochs (default: 50)
-- `--threshold_percentile`: Percentile for anomaly threshold (default: 95)
-- `--test_size`: Proportion of data for testing (default: 0.2)
-- `--use_attention`: Use attention mechanism
-- `--use_bidirectional`: Use bidirectional LSTM layers
-- `--use_autoencoder`: Use autoencoder architecture
-- `--use_robust_scaler`: Use RobustScaler instead of MinMaxScaler
+## Architecture
 
-## Model Outputs
+The MAS consists of several components:
 
-The training process generates several artifacts in the output directory:
+1. **Coordinator (`coordinator.py`)**: The central component that monitors the cluster and coordinates remediation actions.
+2. **Specialized Agents (`specialized_agents.py`)**: Specialized agents for handling different types of issues:
+   - ResourceExhaustionAgent: Handles CPU and memory issues
+   - NetworkIssueAgent: Handles network connectivity issues
+   - CrashLoopAgent: Handles crash loops and restarts
+   - AnalysisAgent: Provides deeper analysis of issues
+3. **Remediation System (`remediation.py`)**: Implements strategies for remediating different types of issues.
+4. **Effectiveness Evaluation (`remediation_effectiveness.py`)**: Tracks the effectiveness of remediation actions.
 
-- `lstm_anomaly_model.h5`: Trained model
-- `scaler.pkl`: Feature scaler
-- `anomaly_threshold.pkl`: Optimal anomaly threshold
-- `training_history.png`: Training metrics visualization
-- `roc_curve.png`: ROC curve
-- `precision_recall_curve.png`: Precision-Recall curve
-- `confusion_matrix.png`: Confusion matrix
-- `summary_report.txt`: Detailed training summary
+## Phase 2 Enhancements
 
-## Anomaly Detection Criteria
+### Remediation Actions
 
-The model considers the following conditions as anomalies:
+- **Predictive Scaling**: Uses historical metrics to predict future resource needs
+- **Adaptive HPA Configuration**: Dynamically adjusts HPA settings based on workload patterns
+- **Resource Optimization**: Intelligently adjusts CPU and memory limits based on actual usage
+- **Rollback Capability**: Automatically rolls back failed remediation actions
 
-1. Pod Status: CrashLoopBackOff, Error, Unknown
-2. Event Reason: OOMKilling
-3. Node Status: NodeNotReady
-4. Network Issues: Dropped packets
-5. Container Issues: Less than expected ready containers
-6. Resource Usage:
-   - Sudden CPU spikes
-   - Very high memory usage (>95%)
-   - Low container readiness ratio (<50%)
-   - Excessive pod restarts (>5)
+### Effectiveness Evaluation
 
-## Performance Metrics
+- **Success Tracking**: Measures and reports on remediation success rates
+- **Trend Analysis**: Analyzes effectiveness trends over time
+- **Strategy Optimization**: Identifies the most effective remediation strategies
 
-The model is evaluated using multiple metrics:
+## Configuration
 
-- Accuracy
-- AUC (Area Under the ROC Curve)
-- Precision
-- Recall
-- F1 Score
+The system can be configured through environment variables:
+
+| Variable                 | Description                                           | Default         |
+| ------------------------ | ----------------------------------------------------- | --------------- |
+| KUBERNETES_CONTEXT       | Kubernetes context to use                             | current-context |
+| MONITOR_INTERVAL         | Interval between monitoring cycles (seconds)          | 300             |
+| COOLDOWN_PERIOD          | Cooldown period between remediation actions (seconds) | 300             |
+| MAX_REMEDIATION_ATTEMPTS | Maximum remediation attempts                          | 3               |
+| LOG_LEVEL                | Logging level (INFO, DEBUG, WARNING, ERROR)           | INFO            |
+
+## Extending the System
+
+The MAS is designed to be extensible. You can add:
+
+1. New specialized agents by extending the base agent class
+2. New remediation strategies by adding methods to the RemediationSystem
+3. Custom metrics by modifying the metrics collection logic
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Kubernetes community for the excellent API and documentation
+- LangChain and LangGraph for agent orchestration capabilities

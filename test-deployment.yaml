@@ -2,8 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-anomaly-deployment
+  namespace: default
   labels:
     app: test-anomaly
+  annotations:
+    mas.remediation/enabled: "true"
+    mas.monitoring/priority: "high"
 spec:
   replicas: 1
   selector:
@@ -13,18 +17,23 @@ spec:
     metadata:
       labels:
         app: test-anomaly
+      annotations:
+        memory.analysis.mas/enabled: "true"
+        cpu.analysis.mas/enabled: "true"
+        mas.remediation/auto-scale: "true"
     spec:
       containers:
-        - name: test-container
-          image: busybox
-          command: ["sh", "-c", "while true; do sleep 1; done"]
+        - name: stress
+          image: polinux/stress
+          command: ["stress"]
+          args: ["--vm", "1", "--vm-bytes", "150M", "--timeout", "1800s"]
           resources:
             requests:
-              cpu: "100m"
               memory: "128Mi"
+              cpu: "250m"
             limits:
-              cpu: "200m"
               memory: "256Mi"
+              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service

@@ -1,0 +1,171 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: crash-test-config
+  namespace: default
+data:
+  test-script.sh: |
+    #!/bin/sh
+    set -e  # Exit immediately if a command fails
+
+    echo "Starting test script..."
+    echo "CRASH_TYPE=$CRASH_TYPE"
+
+    # Function for logging with timestamps
+    log() {
+      echo "[$(date +%Y-%m-%d\ %H:%M:%S)] $1"
+    }
+
+    # Create a test directory and file that we know we can write to
+    mkdir -p /tmp/test-area
+    touch /tmp/test-area/writable-file.txt
+
+    case $CRASH_TYPE in
+      "oom")
+        log "Simulating OOM crash..."
+        python3 -c "x = ' ' * (int($MEMORY_LIMIT * 0.9))"  # Use 90% of limit
+        ;;
+      "command")
+        log "Simulating command not found..."
+        nonexistent_command
+        ;;
+      "permission")
+        log "Simulating permission denied..."
+        # Create a protected file that we know we can't write to with current permissions
+        mkdir -p /restricted
+        touch /restricted/protected-file.txt
+        chmod 0400 /restricted/protected-file.txt  # Read-only
+        
+        if ! echo "test" > /restricted/protected-file.txt 2>&1; then
+          log "Permission denied error: Cannot write to /restricted/protected-file.txt"
+          # Record the error to a log file for later analysis
+          echo "Permission denied at $(date)" >> /tmp/test-area/error.log
+          exit 1
+        fi
+        ;;
+      "timeout")
+        log "Simulating process timeout..."
+        sleep 300  # Sleep for 5 minutes
+        ;;
+      *)
+        log "Simulating application error..."
+        python3 -c "import sys; print('Simulated application error!', file=sys.stderr); sys.exit(1)"
+        ;;
+    esac
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crash-test
+  namespace: default
+  labels:
+    app: crash-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crash-test
+  template:
+    metadata:
+      labels:
+        app: crash-test
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      initContainers:
+        - name: script-verify
+          image: busybox:stable
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Verifying test script..."
+              cat /scripts/test-script.sh
+              chmod +x /scripts/test-script.sh
+              # Create the directories with appropriate permissions
+              mkdir -p /restricted
+              touch /restricted/protected-file.txt
+              chmod 0400 /restricted/protected-file.txt
+              echo "Script verified and permissions set."
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: test-script
+              mountPath: /scripts
+            - name: restricted-volume
+              mountPath: /restricted
+      containers:
+        - name: crash-test
+          image: python:3.9-slim
+          command: ["/bin/sh"]
+          args: ["/scripts/test-script.sh"]
+          env:
+            - name: CRASH_TYPE
+              value: "permission"
+            - name: MEMORY_LIMIT
+              value: "104857600" # 100MB in bytes
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "100m"
+            limits:
+              memory: "100Mi"
+              cpu: "200m"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp/test-area/writable-file.txt
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - test
+                - -e
+                - /tmp/test-area/writable-file.txt
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: test-script
+              mountPath: /scripts
+              readOnly: true
+            - name: restricted-volume
+              mountPath: /restricted
+              readOnly: false
+            - name: tmp-volume
+              mountPath: /tmp
+      volumes:
+        - name: test-script
+          configMap:
+            name: crash-test-config
+            defaultMode: 0755
+        - name: restricted-volume
+          emptyDir: {}
+        - name: tmp-volume
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crash-test-service
+  namespace: default
+spec:
+  selector:
+    app: crash-test
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP
